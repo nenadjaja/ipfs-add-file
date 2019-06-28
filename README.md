@@ -1,68 +1,35 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Upload files to IPFS
 
-In the project directory, you can run:
+React app that connects to IPFS and adds a file to it. Once it's added, it sends the transaction hash to Ethereum smart contract that's deployed to Rinkeby, using user's MetaMask account.
 
-### `npm start`
+## How it works
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Main code is in `App.js` and it executes the following steps:
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+1. Get a file from the UI and convert it to a file buffer
+2. Send the buffered file to IPFS and save the hash it returns
+3. Use the user's MetaMask account to send the transaction hash to Ethereum contract for storage
 
-### `npm test`
+## Build and run
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Run `yarn` to install all dependencies
+2. Run `yarn start` to bring up the UI on port `3000`
+3. Run `yarn build` to create a production build
 
-### `npm run build`
+## Additional notes
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### 1. IPFS CORS settings
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+We need to enable CORS in IPFS API so localhost can talk to it. This is done by running the following commands in the terminal:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["http://localhost:3000"]'
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST"]'
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials '["true"]'
+```
 
-### `npm run eject`
+#### 2. Contract
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Smart contract that's deployed to Rinkeby: https://rinkeby.etherscan.io/address/0x24c1ca93cdce83a3311f68d079d5dac5b46accb2
